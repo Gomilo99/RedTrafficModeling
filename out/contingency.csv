@@ -1,0 +1,3 @@
+protocol,size_cat,prob
+TCP,Pequeño,0.75
+UDP,Pequeño,0.25
