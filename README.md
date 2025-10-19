@@ -67,6 +67,7 @@ Se generan:
 - `out\exponential_interarrivals.png`: Hist. de interarribos con PDF Exponencial superpuesta.
 - `out\contingency.csv`: Tabla conjunta y probabilidades.
 - `out\anomalies.csv`: Intervalos de 1s marcados como anómalos (k > λ + 3√λ).
+- `out\summary_metrics.csv`: Resumen con λ por conteos, λ por interarribos, índice de dispersión y umbral.
 
 ## Flujo dentro de la app
 
@@ -101,6 +102,11 @@ Fase 2: Análisis con Variables Aleatorias
 
 Fase 3: Detección de Anomalías
 - Umbral simple: k > λ + 3√λ para marcar segundos anómalos.
+
+## Entregables
+
+- Guión para video: `docs/video_script.md`.
+- Plantilla de informe (para exportar a PDF): `docs/informe_template.md`.
 
 ## Extensiones posibles
 

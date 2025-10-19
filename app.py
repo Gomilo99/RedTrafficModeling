@@ -103,9 +103,9 @@ class App(tk.Tk):
 
             sim = MM1Simulator(lam, mu)
             res = sim.run(duration=duration if duration and duration > 0 else None,
-                          max_arrivals=arrivals_cap if arrivals_cap and arrivals_cap > 0 else None,
-                          record_timeline=True,
-                          warmup_time=warmup)
+                        max_arrivals=arrivals_cap if arrivals_cap and arrivals_cap > 0 else None,
+                        record_timeline=True,
+                        warmup_time=warmup)
             self._show_results(res)
         except Exception as e:
             messagebox.showerror("Error en simulación", str(e))

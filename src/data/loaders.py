@@ -22,9 +22,22 @@ def read_network_csv(path: str, tz: Optional[str] = None) -> List[TrafficRecord]
     with open(path, 'r', newline='', encoding='utf-8') as f:
         reader = csv.DictReader(f)
         for row in reader:
-            ts_str = row['Timestamp']
-            # Parse dd/mm/YYYY HH:MM
-            ts = datetime.strptime(ts_str, "%d/%m/%Y %H:%M")
+            ts_str = row['Timestamp'].strip()
+            # Probar múltiples formatos comunes
+            fmts = [
+                "%d/%m/%Y %I:%M:%S %p",  # 20/02/2018 08:31:01 AM (12h con segundos)
+                "%d/%m/%Y %H:%M:%S",     # 20/02/2018 08:31:01 (24h con segundos)
+                "%d/%m/%Y %H:%M",        # 20/02/2018 08:31 (24h sin segundos)
+            ]
+            ts: Optional[datetime] = None
+            for fmt in fmts:
+                try:
+                    ts = datetime.strptime(ts_str, fmt)
+                    break
+                except Exception:
+                    continue
+            if ts is None:
+                raise ValueError(f"Timestamp no reconocido: '{ts_str}'")
             size = int(row['Packet_Size'])
             proto = int(row['Protocol'])
             records.append(TrafficRecord(ts, size, proto))
@@ -38,7 +51,7 @@ def estimate_rates_from_records(records: List[TrafficRecord], interval_seconds: 
 
     - lambda: estimated as average arrivals per second, grouping by fixed intervals (default 60s).
     - mu: if mean_service_time_ms provided, mu = 1000 / mean_service_time_ms (per second).
-           Otherwise, a simple heuristic uses packet size to guess service time at a given link rate.
+        Otherwise, a simple heuristic uses packet size to guess service time at a given link rate.
     Returns (lambda, mu)
     """
     if not records:

@@ -23,6 +23,26 @@ def estimate_lambda_from_counts(counts_per_sec: Dict[int, int]) -> float:
     return total / secs if secs > 0 else float('nan')
 
 
+def expand_counts_with_zeros(counts_per_sec: Dict[int, int]) -> List[int]:
+    """Devuelve el vector de cuentas por cada segundo del rango observado, rellenando con 0 donde no hay llegadas."""
+    if not counts_per_sec:
+        return []
+    smin, smax = min(counts_per_sec.keys()), max(counts_per_sec.keys())
+    return [counts_per_sec.get(s, 0) for s in range(smin, smax + 1)]
+
+
+def index_of_dispersion(counts: List[int]) -> float:
+    """Índice de dispersión = Var(X)/E[X] (≈1 en Poisson). Devuelve NaN si media=0."""
+    n = len(counts)
+    if n == 0:
+        return float('nan')
+    mean = sum(counts) / n
+    if mean == 0:
+        return float('nan')
+    var = sum((x - mean) ** 2 for x in counts) / (n - 1) if n > 1 else 0.0
+    return var / mean
+
+
 def interarrival_times(timestamps_sec: List[float]) -> List[float]:
     times = sorted(timestamps_sec)
     if len(times) < 2:

@@ -1,0 +1,5 @@
+protocolo,tam_categoria,conteo,probabilidad
+TCP,Pequeño,48,0.75
+TCP,Grande,0,0.0
+UDP,Pequeño,16,0.25
+UDP,Grande,0,0.0
